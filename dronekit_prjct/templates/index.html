@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Drone Dashboard</title>
+</head>
+<body>
+    <h2>Drone Status</h2>
+    <p><strong>Altitude:</strong> <span id="altitude"></span></p>
+    <p><strong>Yaw:</strong> <span id="yaw"></span></p>
+    <p><strong>Roll:</strong> <span id="roll"></span></p>
+    <p><strong>Pitch:</strong> <span id="pitch"></span></p>
+    <p><strong>Mode:</strong> <span id="mode"></span></p>
+    <p><strong>Armed:</strong> <span id="armed"></span></p>
+    <button onclick="takeoff()">Take Off</button>
+
+    <script>
+        async function fetchData() {
+            const res = await fetch('/status');
+            const data = await res.json();
+            document.getElementById('altitude').innerText = data.altitude.toFixed(2);
+            document.getElementById('yaw').innerText = data.yaw.toFixed(2);
+            document.getElementById('roll').innerText = data.roll.toFixed(2);
+            document.getElementById('pitch').innerText = data.pitch.toFixed(2);
+            document.getElementById('mode').innerText = data.mode;
+            document.getElementById('armed').innerText = data.armed;
+        }
+
+        async function takeoff() {
+            await fetch('/takeoff', { method: 'POST' });
+        }
+
+        setInterval(fetchData, 1000);
+    </script>
+</body>
+</html>
